@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consumiento APIs</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div>
+            <h1>Consultas iNaturalist</h1>
+
+            <nav>
+                <a href="#buscarEspecies">Buscar Especies</a>
+                <a href="#redMicelio">Red de Micelio</a>
+                <a href="#GestionCRUD">Hallazgos</a>
+                <a href="#PreferenciasUsuario">Preferencias</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Buscador y Explorador de Especies Silvestres -->
+        <section id="buscarEspecies" class="">
+            <!--Consultar registros  -->
+            <article>
+                <h2>Buscador y Explorador de Especies Silvestres</h2>
+                <p>Consulta las especies medioante iNaturalist</p>
+
+                <div>
+                    <label for="busquedaEspecie">Nombre de la especie:</label>
+                    <input id="busquedaEspecie" type="text" placeholder="Ejemplo: ">
+                    <button id="btnBuscar">Buscar Especie</button>
+                    <button id="btnTodos">Mostrar Especies</button>
+                </div>
+
+                <div id="" class=""></div>
+                <div id="" class=""></div>
+            </article>
+        </section>
+
+        <hr>
+
+        <!-- Ficha Técnica y Red de Micelio -->
+        <section id="redMicelio" class="">
+            <!-- Mostrar propiedades y hábitat -->
+            <article>
+                <h2>Propiedades y Habitad</h2>
+                <button id="btnCargarJson">Información</button>
+
+                <div>
+                    <label for="buscarPropedadHabitad">Buscar Información:</label>
+                    <input id="buscarPropedadHabitad" type="text" placeholder="Propiedad y Habitad">
+                    <button id="buscarPropedadHabitad">Buscar</button>
+                </div>
+
+                <div id="" class=""></div>
+                <div id="" ></div>
+            </article>
+
+            <!-- Mostrar interacción ecológica -->
+            <article>
+                <h2>Interacción Ecológica</h2>
+                <button id="btnCargarJson">Información</button>
+
+                <div>
+                    <label for="buscarInteracionEcologica">Buscar Información:</label>
+                    <input id="buscarInteracionEcologica" type="text" placeholder="Integracion Ecologica">
+                    <button id="buscarInteracionEcologica">Buscar</button>
+                </div>
+
+                <div id="" class=""></div>
+                <div id="" ></div>
+            </article>
+
+            <!-- Guardar especies favoritas -->
+            <article>
+               <h2>Guardar Especies Favoritas</h2>
+                <button id="btnCargarJson">Información</button>
+
+                <div>
+                    <label for="buscarEspeciesFavoritas">Buscar Información:</label>
+                    <input id="buscarEspeciesFavoritas" type="text" placeholder="Especies favoritas">
+                    <button id="buscarEspeciesFavoritas">Buscar</button>
+                </div>
+
+                <div id="" class=""></div>
+                <div id="" ></div>
+            </article>
+        </section>
+
+        <hr>
+
+        <!-- Gestión e Investigación de Hallazgos -->
+        <section id="GestionCRUD" class="">
+            <!-- Crear registros propios -->
+            <article>
+                <h2>Crear Registro</h2>
+
+                <label for="">Crear uno nuevo:</label>
+                <input type="postNombre" placeholder="Nombre" required>
+                <textarea id="postInformacion" placeholder="Acerca de..." required></textarea>
+                <button>Guardar</button>
+            </article>
+
+            <!-- Editar registros -->
+            <article>
+                <h2>Editar Registro</h2>
+
+                <label for="">Actualizar:</label>
+                <input id="putId" type="number" min="1" value="1" required>
+                <input type="putNombre" placeholder="Nuevo Nombre" required>
+                <textarea id="putContenido" placeholder="Nueva Información.." readonly></textarea>
+                <button>Guardar</button>
+
+                <div id="resultadoPut"></div>
+            </article>
+
+            <!-- Eliminar registros -->
+            <article>
+                <h2>Eliminar Registro</h2>
+
+                <label for="">Eliminar</label>
+                <input id="deleteId" type="number" min value="1">
+                <button id="btnDelete">Eliminar Registro</button>
+
+                <div id="resultadoDelete"></div>
+            </article>
+        </section>
+
+        <hr>
+
+        <!-- Preferencias del Investigador y Configuración -->
+        <section id="PreferenciasUsuario" class="">
+            <!-- Almacenar preferencias del usuario -->
+            <article>
+                <h2>Preferencias del usuario</h2>
+            </article>
+        </section>
+    </main>
+
+    <footer>
+        <p>Proyecto de busqueda de Apis</p>
+        <p>Gimena Cubero 2026</p>
+    </footer>
+    <script src="js/script.js"></script>
+</body>
+</html>
