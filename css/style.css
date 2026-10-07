@@ -1,59 +1,9 @@
 *{
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
-body{
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-  background-color: aqua;
-}
-
-#encabezado {
-  display: flex;                   
-  justify-content: space-between;  
-  align-items: center;            
-  padding: 1rem 2rem;             
-  background-color: #d48080;
-}
-
-nav {
-  display: flex;
-  gap: 1.5rem;
-}
-
-nav a {
-  text-decoration: none;
-  color: #2c3e50;
-  font-weight: 500;
-  transition: color 0.3s ease;
-}
-
-.bloqueSolo{
-  background-color: rgb(211, 153, 81);
-  width: 90%;
-  margin: 1rem auto auto;
-  padding: 2rem;
-  border-radius: 10px;
-}
-
-.grupoBloques {
-  background-color: burlywood;
-  display: flex;
-  justify-content: center; 
-  flex-wrap: wrap;
-  width: 90%;
-  max-width: 1200px;
-  margin: 1.5rem auto;
-  gap: 2rem;
-  padding: 1.5rem;
-}
-
-.bloqueIndividualGrupal {
-  background-color: chartreuse;
-  border-radius: 10px;
-  flex: 1;                 /* Hace que crezcan de forma equilibrada */
-  min-width: 280px;        /* Evita que se encojan demasiado; si la pantalla baja de esto, bajan de renglón */
-  max-width: 500px;        /* Evita que se estiren demasiado a lo ancho en computadoras */
-  padding: 1.5rem;         /* Espacio interno para que el contenido no pegue a las orillas */
+#encabezado{
+  
 }

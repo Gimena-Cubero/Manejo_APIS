@@ -26,28 +26,41 @@
                 <div>
                     <!-- consultar especies de hongos -->
                     <article>
-
+                        <h2>Consultar Especies de Hongos</h2>
+                        <p>Obtén el registro general de hongos desde la API de iNaturalist.</p>
+                        <button id="btnConsultarHongos">Cargar Especies</button>
+                        <div id="resultadoConsultar"></div>
                     </article>
                 </div>
 
                 <div>
                     <!-- //buscar hongos por filtros -->
                     <article>
-
+                        <h2>Buscar Hongos por Filtros</h2>
+                        <label for="inputFiltroNombre">Nombre o Taxón:</label>
+                        <input id="inputFiltroNombre" type="text" placeholder="Ej: Amanita, Psilocybe...">
+                        <button id="btnFiltrar">Aplicar Filtros</button>
+                        <div id="resultadoFiltros"></div>
                     </article>
                 </div>
 
                 <div>
                     <!-- //mostrar caracteristicas -->
                     <article>
-
-                    </article>
+                        <h2>Características Morfológicas</h2>
+                        <p>Explora los detalles físicos del hongo seleccionado.</p>
+                        <button id="btnVerCaracteristicas">Ver Características</button>
+                        <div id="detalleCaracteristicas"></div>
+                        </article>
                 </div>
 
                 <div>
                     <!-- //mostrar habitad y ecologia -->
                     <article>
-
+                        <h2>Hábitat y Ecología</h2>
+                        <p>Conoce las condiciones ambientales y el entorno natural.</p>
+                        <button id="btnVerHabitat">Ver Hábitat</button>
+                        <div id="detalleHabitat"></div>
                     </article>
                 </div>
             </div>
@@ -58,166 +71,48 @@
                 <div>
                     <!-- Crear notas de campo u obserbaciones propias -->
                     <article>
-
+                        <h2>Crear Nota de Campo</h2>
+                        <label for="postNombre">Registrar nuevo hongo:</label>
+                        <input id="postNombre" type="text" placeholder="Nombre común o científico" required>
+                        <textarea id="postInformacion" placeholder="Detalles de dónde lo encontré, sustrato..." required></textarea>
+                        <button id="btnCrear">Guardar Registro</button>
                     </article>
                 </div>
 
                 <div>
                     <!-- editar notas de campo propias -->
                     <article>
-                        
+                        <h2>Editar Nota de Campo</h2>
+                        <label for="putId">ID del registro a actualizar:</label>
+                        <input id="putId" type="number" min="1" value="1" required>
+                        <input id="putNombre" type="text" placeholder="Nuevo Nombre" required>
+                        <textarea id="putContenido" placeholder="Nueva Información..." required></textarea>
+                        <button id="btnActualizar">Actualizar</button>
+                        <div id="resultadoPut"></div>
                     </article>
                 </div>
                 
                 <div>
                     <!-- eliminar notas de campo -->
                     <article>
-                        
+                        <h2>Eliminar Nota de Campo</h2>
+                        <label for="deleteId">ID del registro a eliminar:</label>
+                        <input id="deleteId" type="number" min="1" value="1">
+                        <button id="btnDelete">Eliminar Registro</button>
+                        <div id="resultadoDelete"></div>
                     </article>
                 </div>
-            </div>
-        </section>
-
-
-
-        <!-- Buscador y Explorador de Especies Silvestres -->
-        <section id="buscarEspecies" >
-            <!--Consultar registros  -->
-            <div class="bloqueSolo">
-                <article>
-                    <h2>Buscador y Explorador de Especies Silvestres</h2>
-                    <p>Consulta las especies medioante iNaturalist</p>
-
-                    <div>
-                        <label for="busquedaEspecie">Nombre de la especie:</label>
-                        <input id="busquedaEspecie" type="text" placeholder="Ejemplo: ">
-                        <button id="btnBuscar">Buscar Especie</button>
-                        <button id="btnTodos">Mostrar Especies</button>
-                    </div>
-
-                    <div id="" class=""></div>
-                    <div id="" class=""></div>
-                </article>
-            </div>
-        </section>
-
-        <hr>
-
-        <!-- Ficha Técnica y Red de Micelio -->
-        <section id="redMicelio" class="">
-            <!-- Mostrar propiedades y hábitat -->
-            <div class="grupoBloques">
-                <article id="propiedadesHabitad" class="bloqueIndividualGrupal">
-                    <h2>Propiedades y Habitad</h2>
-                    <button id="btnCargarJson">Información</button>
-
-                    <div>
-                        <label for="buscarPropedadHabitad">Buscar Información:</label>
-                        <input id="buscarPropedadHabitad" type="text" placeholder="Propiedad y Habitad">
-                        <button id="buscarPropedadHabitad">Buscar</button>
-                    </div>
-
-                    <div id="" class=""></div>
-                    <div id="" ></div>
-                </article>
-
-                <!-- Mostrar interacción ecológica -->
-                <article id="interaccionEcologica" class="bloqueIndividualGrupal">
-                    <h2>Interacción Ecológica</h2>
-                    <button id="btnCargarJson">Información</button>
-
-                    <div>
-                        <label for="buscarInteracionEcologica">Buscar Información:</label>
-                        <input id="buscarInteracionEcologica" type="text" placeholder="Integracion Ecologica">
-                        <button id="buscarInteracionEcologica">Buscar</button>
-                    </div>
-
-                    <div id="" class=""></div>
-                    <div id="" ></div>
-                </article>
-            </div>
-
-
-            <!-- Guardar especies favoritas -->
-            <div class="bloqueSolo">
-                <article>
-                    <h2>Guardar Especies Favoritas</h2>
-                    <button id="btnCargarJson">Información</button>
-
-                    <div>
-                        <label for="buscarEspeciesFavoritas">Buscar Información:</label>
-                        <input id="buscarEspeciesFavoritas" type="text" placeholder="Especies favoritas">
-                        <button id="buscarEspeciesFavoritas">Buscar</button>
-                    </div>
-
-                    <div id="" class=""></div>
-                    <div id="" ></div>
-                </article>
-            </div>
-            
-        </section>
-
-        <hr>
-
-        <!-- Gestión e Investigación de Hallazgos -->
-        <section id="GestionCRUD" class="">
-            <!-- Crear registros propios -->
-            <div class="grupoBloques">
-                <article class="bloqueIndividualGrupal">
-                    <h2>Crear Registro</h2>
-
-                    <label for="">Crear uno nuevo:</label>
-                    <input type="postNombre" placeholder="Nombre" required>
-                    <textarea id="postInformacion" placeholder="Acerca de..." required></textarea>
-                    <button>Guardar</button>
-                </article>
-
-                <!-- Editar registros -->
-                <article class="bloqueIndividualGrupal">
-                    <h2>Editar Registro</h2>
-
-                    <label for="">Actualizar:</label>
-                    <input id="putId" type="number" min="1" value="1" required>
-                    <input type="putNombre" placeholder="Nuevo Nombre" required>
-                    <textarea id="putContenido" placeholder="Nueva Información.." readonly></textarea>
-                    <button>Guardar</button>
-
-                    <div id="resultadoPut"></div>
-                </article> 
-            </div>
-            
-
-            <!-- Eliminar registros -->
-            <div class="bloqueSolo">
-                <article>
-                    <h2>Eliminar Registro</h2>
-
-                    <label for="">Eliminar</label>
-                    <input id="deleteId" type="number" min value="1">
-                    <button id="btnDelete">Eliminar Registro</button>
-
-                    <div id="resultadoDelete"></div>
-                </article>
-            </div>
-            
-        </section>
-
-        <hr>
-
-        <!-- Preferencias del Investigador y Configuración -->
-        <section id="PreferenciasUsuario" class="bloqueSolo">
-            <!-- Almacenar preferencias del usuario -->
-            <div>
-                <article>
-                <h2>Preferencias del usuario</h2>
-                </article> 
             </div>
         </section>
     </main>
 
     <footer>
-        <p>Proyecto de busqueda de Apis</p>
-        <p>Gimena Cubero 2026</p>
+        <!-- Información del proyecto -->
+        <article>
+            <h3>FungiExplorer &bull; iNaturalist API</h3>
+            <p>Plataforma de exploración micológica y gestión de avistamientos.</p>
+            <p>&copy; 2026 &bull; Proyecto académico de desarrollo de software</p>
+        </article>
     </footer>
     <script src="js/script.js"></script>
 </body>
