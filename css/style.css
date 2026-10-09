@@ -1,59 +1,249 @@
 *{
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+/* rgb(65, 87, 69) */
+/* rgb(87, 117, 92) */
+/* rgb(50, 65, 53) */
+
+/* rgb(32, 38, 41) - verde oscuro*/ 
+/* rgb(87, 117, 92) -verde clarito */
+/* rgb(155, 166, 158) - gris*/
+/* rgb(232, 236, 232) -blanco */
+/* rgb(76, 209, 55) - verde brillante*/
+
+#encabezado{
+  background-color: rgb(87, 117, 92);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+}
+
+#encabezado nav{
+  display: flex;
+  gap: 1rem;
+}
+
+nav a{
+  text-decoration: none;
+  color: white;
 }
 
 body{
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-  background-color: aqua;
+  background-color: rgb(65, 87, 69);
+  color: white;
 }
 
-#encabezado {
-  display: flex;                   
-  justify-content: space-between;  
-  align-items: center;            
-  padding: 1rem 2rem;             
-  background-color: #d48080;
-}
-
-nav {
-  display: flex;
-  gap: 1.5rem;
-}
-
-nav a {
-  text-decoration: none;
-  color: #2c3e50;
-  font-weight: 500;
-  transition: color 0.3s ease;
-}
-
-.bloqueSolo{
-  background-color: rgb(211, 153, 81);
-  width: 90%;
-  margin: 1rem auto auto;
-  padding: 2rem;
-  border-radius: 10px;
-}
-
-.grupoBloques {
-  background-color: burlywood;
-  display: flex;
-  justify-content: center; 
-  flex-wrap: wrap;
-  width: 90%;
-  max-width: 1200px;
-  margin: 1.5rem auto;
+.gridConsultas{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
-  padding: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
 }
 
-.bloqueIndividualGrupal {
-  background-color: chartreuse;
+.cardConsulta{
+  background-color: rgb(50, 65, 53);
+  border: 1px solid rgb(36, 47, 38);
   border-radius: 10px;
-  flex: 1;                 /* Hace que crezcan de forma equilibrada */
-  min-width: 280px;        /* Evita que se encojan demasiado; si la pantalla baja de esto, bajan de renglón */
-  max-width: 500px;        /* Evita que se estiren demasiado a lo ancho en computadoras */
-  padding: 1.5rem;         /* Espacio interno para que el contenido no pegue a las orillas */
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.cardConsulta article {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.cardConsulta h2{
+  text-align: center;
+  font-size: 1.4rem;
+  margin: 1rem;
+}
+
+.cardConsulta p{
+  text-align: justify;
+  line-height: 1.5;
+  margin-bottom: 1.2rem;
+}
+
+.cardConsulta label{
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.cardConsulta input{
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: #1a1a19;
+  border: 1.5px solid #d4c5b9;
+  border-radius: 8px 0px;
+  color: #d4c5b9;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  margin-bottom: 1.2rem;
+}
+
+.cardConsulta textarea{
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: #1a1a19;
+  border: 1.5px solid #d4c5b9;
+  border-radius: 0px 8px;
+  color: #d4c5b9;
+  font-size: 1rem;
+  box-sizing: border-box;
+  margin-bottom: 1.2rem;
+  min-height: 120px;
+  max-height: 250px;
+  resize: vertical;
+  margin-bottom: 1.2rem;
+}
+
+.cardConsulta input[type="text"]:focus{
+  border-color: #8c6d53;
+  box-shadow: 0 0 0 3px rgba(140, 109, 83, 0.15);
+}
+
+.cardConsulta button {
+  background-color: #6f533e;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  margin-top: auto;
+}
+
+.cardConsulta select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: #1a1a19;
+  border: 1.5px solid #d4c5b9;
+  border-radius: 8px;
+  color: #d4c5b9;
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  margin-bottom: 1.2rem;
+}
+
+.cardConsulta input[type="checkbox"] {
+  accent-color: #6f533e; 
+  width: 1.1rem;
+  height: 1.1rem;
+  cursor: pointer;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+.cardConsulta button:active {
+  transform: scale(0.98);
+}
+
+.gridConsultas .cardConsulta:nth-child(3):last-child {
+  grid-column: span 2;
+  max-width: 600px;
+  margin: 0 auto;    
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .grid-consultas {
+    grid-template-columns: 1fr;
+  }
+}
+
+footer {
+  background-color: rgb(50, 65, 53);
+  color: rgb(155, 166, 158);
+  text-align: center;
+  padding: 2.5rem 1rem;
+  margin-top: 3rem;
+  border-top: 1px solid rgb(50, 65, 53);
+}
+
+footer article h3 {
+  color: rgb(232, 236, 232);
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+footer article p {
+  font-size: 0.95rem;
+  margin-bottom: 0.4rem;
+  line-height: 1.4;
+}
+
+
+
+body {
+  background-color: rgb(65, 87, 69);
+  color: white;
+  min-height: 100vh;
+  display: flex;              
+  flex-direction: column;
+  margin: 0;
+}
+
+main {
+  flex: 1;
+}
+
+footer {
+  color: rgb(155, 166, 158);
+  text-align: center;
+  padding: 2.5rem 1rem;
+  border-top: 1px solid rgb(50, 65, 53);
+  width: 100%;
+}
+
+body {
+    background-color: rgb(65, 87, 69);
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    position: relative;
+    z-index: 1; /* Capa base */
+}
+
+.honguitoIzq {
+  position: absolute;
+  bottom: 20px;         
+  left: 0;              
+  width: 650px;         
+  height: auto;
+  opacity: 0.60;        
+  pointer-events: none; 
+  z-index: -1;          
+}
+
+.honguitoDer {
+  position: absolute;   
+  bottom: 20px;
+  right: 0;             
+  width: 650px;   
+  height: auto;
+  transform: scaleX(-1); 
+  opacity: 0.60;
+  pointer-events: none;
+  z-index: -1;          
 }
