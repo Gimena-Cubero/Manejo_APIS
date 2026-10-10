@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Preferencias y Colecciones</title>
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
     <header>
@@ -20,25 +21,60 @@
     </header>
     <main>
         <section>
-            <div>
+            <div class="gridConsultas">
                 <div>
                     <!-- guardar avistamientos -->
-                    <article>
-
+                    <article class="cardConsulta">
+                        <h2>Guardar Avistamientos Favoritos</h2>
+                        <p>Gestiona y consulta las especies o avistamientos de iNaturalist que has guardado.</p>
+                        <div>
+                            <label for="buscarFavoritos">Buscar en tus guardados:</label>
+                            <input id="buscarFavoritos" type="text" placeholder="Nombre del hongo guardado...">
+                            <button id="btnBuscarFavoritos">Buscar</button>
+                        </div>
+                        <div id="resultadoFavoritos"></div>
                     </article>
                 </div>
 
                 <div>
                     <!-- almacenar preferencias -->
-                    <article>
-
+                    <article class="cardConsulta">
+                        <h2>Almacenar Preferencias del Usuario</h2>
+                        <p>Personaliza cómo quieres visualizar la plataforma de micología.</p>
+                        <div>
+                            <label for="selectRegion">Región predeterminada:</label>
+                            <select id="selectRegion">
+                                <option value="CR">Costa Rica</option>
+                                <option value="GLOBAL">Global</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="checkModoOscuro">
+                                <input type="checkbox" id="checkModoOscuro"> Activar Modo Bosque Oscuro
+                            </label>
+                        </div>
+                        <button id="btnGuardarPreferencias">Guardar Preferencias</button>
+                        <div id="resultadoPreferencias"></div>
                     </article>
                 </div>
             </div>
         </section>
+
+        <section>
+            <img src="../img/Honguitos.png" alt="Honguito decorativo" class="honguitoIzq">
+            <img src="../img/Honguitos.png" alt="Honguito decorativo" class="honguitoDer">
+        </section>
     </main>
     <footer>
-        
+        <div>
+            <!-- Información del proyecto -->
+            <article>
+                <h3>FungiExplorer &bull; iNaturalist API</h3>
+                <p>Plataforma de exploración micológica y gestión de avistamientos.</p>
+                <p>&copy; 2026 &bull; Proyecto académico de desarrollo de software</p>
+            </article>
+        </div>
     </footer>
+    <script src="../js/script.js"></script>
 </body>
 </html>
