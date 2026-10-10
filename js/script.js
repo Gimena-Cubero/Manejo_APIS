@@ -18,7 +18,7 @@ class Micota{
     }
 }
 
-//
+//mostrar mensaje
 function mostrarMensaje(Id, texto, tipo=''){
     const elemento = document.getElementById(Id);
     if(elemento){
@@ -28,6 +28,18 @@ function mostrarMensaje(Id, texto, tipo=''){
 }
 
 //
-function actualizarEstado(texto, tipo=''){
-    const estado = estado;
+function convertirAMicota(dato){
+    const nuevoHongo = new Micota(
+        dato.id,
+        dato.name,
+        dato.rank,
+        dato.observed_on,
+        dato.extinct,
+        dato.observed_time_zone,
+        dato.description,
+        dato.photos?.[0]?.url // el simbolo raro es para wque no ayan problemas conm la api
+        // si esta  la imagen no la carga ? el sino ayudara a que no aya un error 
+    );
+
+    return nuevoHongo;
 }

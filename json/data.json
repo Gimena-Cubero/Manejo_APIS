@@ -1,0 +1,39 @@
+{
+  "hongos": [
+    {
+      "codigo": "AM-01",
+      "continente": "América",
+      "interes": "Costa Rica",
+      "prioridad": 1,
+      "descripcion": "Amanita muscaria encontrada en bosques de altura."
+    },
+    {
+      "codigo": "PS-02",
+      "continente": "América",
+      "interes": "Mesoamérica",
+      "prioridad": 2,
+      "descripcion": "Psilocybe cubensis común en zonas tropicales húmedas."
+    },
+    {
+      "codigo": "BO-03",
+      "continente": "Europa",
+      "interes": "Europa central",
+      "prioridad": 2,
+      "descripcion": "Boletus edulis, hongo comestible de alto valor culinario."
+    },
+    {
+      "codigo": "GA-04",
+      "continente": "Asia",
+      "interes": "Asia oriental",
+      "prioridad": 3,
+      "descripcion": "Ganoderma lucidum (Reishi), utilizado en medicina tradicional."
+    },
+    {
+      "codigo": "MA-05",
+      "continente": "América",
+      "interes": "Sudamérica",
+      "prioridad": 2,
+      "descripcion": "Macrolepiota procera, conocido popularmente como paraguas."
+    }
+  ]
+}
