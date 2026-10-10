@@ -27,14 +27,14 @@ function mostrarMensaje(Id, texto, tipo=''){
     }
 }
 
-//
+// convertir los datos a un objeto de clase
 function convertirAMicota(dato){
     const nuevoHongo = new Micota(
         dato.id,
-        dato.name,
-        dato.rank,
+        dato.taxon?.name,
+        dato.taxon?.rank,
         dato.observed_on,
-        dato.extinct,
+        dato.taxon?.extinct,
         dato.observed_time_zone,
         dato.description,
         dato.photos?.[0]?.url // el simbolo raro es para wque no ayan problemas conm la api
@@ -43,3 +43,29 @@ function convertirAMicota(dato){
 
     return nuevoHongo;
 }
+
+//conexion y validacion de la api
+async function consultarHongos() {
+    try{
+        const respuesta = await fetch(
+            `${API_FUNGI}observations?taxon_id=47170`
+        );
+        if (!respuesta.ok){
+            throw new Error(`Error HTTP: ${respuesta.status}`)
+        }
+        const datos = await respuesta.json();
+        listaFungi = datos.results.map(convertirAMicota);
+        console.log("Hongos cargados:", listaFungi);
+    }
+    
+    catch (error){
+        console.log(error); 
+    }
+    
+}
+
+
+
+
+// escuchadores de eventos para los botyones
+document.getElementById('btnConsultarHongos').addEventListener('click', consultarHongos);
