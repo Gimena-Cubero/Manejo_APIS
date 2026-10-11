@@ -313,8 +313,38 @@ function crearNotaCampo(event){
 }
 
 //actualizar nota de campo
+function actualizarNotaCampo(event) {
+    if (event) event.preventDefault();
 
+    const idInput = parseInt(document.getElementById('putId').value);
+    const nuevoNombre = document.getElementById('putNombre').value.trim();
+    const nuevoContenido = document.getElementById('putContenido').value.trim();
+    const contenedorResultado = document.getElementById('resultadoPut');
 
+    if (!nuevoNombre || !nuevoContenido || isNaN(idInput)) {
+        contenedorResultado.innerHTML = `<p style="color: red;">Por favor, completa todos los campos correctamente.</p>`;
+        return;
+    }
+
+    const indiceReal = idInput - 1;
+    if (indiceReal >= 0 && indiceReal < listaFungi.length) {
+        listaFungi[indiceReal].name = nuevoNombre;
+        listaFungi[indiceReal].description = nuevoContenido;
+        localStorage.setItem('misNotasFungi', JSON.stringify(listaFungi));
+        //se muesta en el contenedor que todo salio bien, o no
+        contenedorResultado.innerHTML = `<p style="color: green;">¡Registro #${idInput} actualizado con éxito!</p>`;
+        document.getElementById('putNombre').value = '';
+        document.getElementById('putContenido').value = '';
+    } else {
+        contenedorResultado.innerHTML = `<p style="color: red;">Error: No existe ningún registro con el ID ${idInput}.</p>`;
+    }
+
+    //este para que funcione se tiene que crear un registro y para verificar que se actualizo
+    //podemos usar el mismo comando
+    //console.log(JSON.parse(localStorage.getItem('misNotasFungi')));
+}
+
+//eliminar nota de campo
 
 // escuchadores de eventos para los botyones
 document.getElementById('btnConsultarHongos').addEventListener('click', consultarHongos);
@@ -322,3 +352,4 @@ document.getElementById('btnFiltrar').addEventListener('click', filtrarHongos);
 document.getElementById('btnVerCaracteristicas').addEventListener('click', mostrarCaracteristicas);
 document.getElementById('btnVerHabitat').addEventListener('click', mostrarHabitatEcologia);
 document.getElementById('btnCrear').addEventListener('click', crearNotaCampo);
+document.getElementById('btnActualizar').addEventListener('click', actualizarNotaCampo)
