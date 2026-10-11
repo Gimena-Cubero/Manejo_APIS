@@ -64,11 +64,12 @@
                         <h2>Hábitat y Ecología</h2>
                         <p>Conoce las condiciones ambientales y el entorno natural.</p>
                         <button id="btnVerHabitat">Ver Hábitat</button>
-                        <div id="detalleHabitat"></div>
+                        <!-- <div id="detalleHabitat"></div> -->
                     </article>
                 </div>
 
                 <div id="detalleCaracteristicas" class="resultado-api-full"></div>
+                <div id="detalleHabitat" class="resultado-api-full"></div
             </div>
 
             
@@ -82,7 +83,10 @@
                         <h2>Crear Nota de Campo</h2>
                         <label for="postNombre">Registrar nuevo hongo:</label>
                         <input id="postNombre" type="text" placeholder="Nombre común o científico" required>
-                        <textarea id="postInformacion" placeholder="Detalles de dónde lo encontré, sustrato..." required></textarea>
+                        <label for="postFecha">Fecha del avistamiento:</label>
+                        <input id="postFecha" type="date" required>
+                        <label for="postInformacion">Notas de campo:</label>
+                        <textarea id="postInformacion" placeholder="Detalles de dónde lo encontré, sustrato, sombrero, olor..." required></textarea>
                         <button id="btnCrear">Guardar Registro</button>
                     </article>
                 </div>

@@ -3,7 +3,9 @@
 const API_FUNGI = 'https://api.inaturalist.org/v1/';
 let listaFungi =[];
 let informacionJson = null;
-let limiteActual = 9; //muestra los resultados de 9 en 9
+let lMostrarHongos = 9; //muestra los resultados de 9 en 9
+let lmostrarCaracteristicas = 9;
+let lmostrarHabitatEcologia = 9;
 
 //https://api.inaturalist.org/v1/observations?taxon_id=47170
 class Micota{
@@ -88,7 +90,7 @@ function mostrarHongos(listaAMostrar = listaFungi){
         return;
     }
 
-    listaAMostrar.slice(0,limiteActual).forEach(hongo => {
+    listaAMostrar.slice(0,lMostrarHongos).forEach(hongo => {
         const tarjeta = document.createElement('article');
         tarjeta.className = 'tarjetaHongo';
         tarjeta.innerHTML = 
@@ -109,14 +111,14 @@ function mostrarHongos(listaAMostrar = listaFungi){
     });
 
     //creacion del boton para que aparescan mas hongos
-    if (limiteActual < listaFungi.length) {
+    if (lMostrarHongos < listaFungi.length) {
         const btnVerMas = document.createElement('button');
         btnVerMas.className = 'btnVerMas';
         btnVerMas.textContent = 'Ver más';
         btnVerMas.className = 'botonVerMas';
 
         btnVerMas.addEventListener('click', () =>{
-            limiteActual+= 9;
+            lMostrarHongos += 9;
             mostrarHongos(listaAMostrar);
         })
 
@@ -157,9 +159,8 @@ function filtrarHongos(){
 //o en peligro de exticion o si vive unicamente en un lugar muy especifico
 async function mostrarCaracteristicas(){
     const contenedorCaracteristicas = document.getElementById('detalleCaracteristicas');
-    contenedorCaracteristicas.innerHTML = '<p>Cargando características...</p>'; // Mensaje de carga amigable
+    contenedorCaracteristicas.innerHTML = '<p>Cargando características...</p>'; 
 
-    // Si la lista está vacía, consultamos la API automáticamente de forma independiente
     if (listaFungi.length === 0) {
         try {
             const respuesta = await fetch(`${API_FUNGI}observations?taxon_id=47170&per_page=150`);
@@ -176,7 +177,7 @@ async function mostrarCaracteristicas(){
 
     contenedorCaracteristicas.innerHTML = '';
 
-    listaFungi.slice(0, limiteActual).forEach(hongo => {
+    listaFungi.slice(0, lmostrarCaracteristicas).forEach(hongo => {
         const tarjeta = document.createElement('article');
         tarjeta.className = 'tarjetaHongo';
         tarjeta.innerHTML = `
@@ -195,14 +196,13 @@ async function mostrarCaracteristicas(){
         contenedorCaracteristicas.appendChild(tarjeta); 
     });
 
-    // El botón "Ver más"
-    if (limiteActual < listaFungi.length) {
+    if (lmostrarCaracteristicas < listaFungi.length) {
         const btnVerMas = document.createElement('button');
         btnVerMas.textContent = 'Ver más';
         btnVerMas.className = 'botonVerMas';
 
         btnVerMas.addEventListener('click', () => {
-            limiteActual += 9;
+            lmostrarCaracteristicas += 9;
             mostrarCaracteristicas(); 
         });
 
@@ -210,8 +210,115 @@ async function mostrarCaracteristicas(){
     }
 }
 
+// mostrar ecologia
+async function mostrarHabitatEcologia(){
+    const contenedorHabitat = document.getElementById('detalleHabitat'); // Ajusta este ID según tu HTML
+    contenedorHabitat.innerHTML = '<p>Cargando datos de hábitat y ecología...</p>';
+
+    // Si la lista está vacía, consultamos la API automáticamente de forma independiente
+    if (listaFungi.length === 0) {
+        try {
+            const respuesta = await fetch(`${API_FUNGI}observations?taxon_id=47170&per_page=150`);
+            if (!respuesta.ok) throw new Error("Error al conectar con la API");
+            
+            const datos = await respuesta.json();
+            listaFungi = datos.results.map(convertirAMicota);
+        } catch (error) {
+            contenedorHabitat.innerHTML = `<p class="sinResultados">No se pudo cargar la información de hábitat automáticamente.</p>`;
+            console.error(error);
+            return;
+        }
+    }
+
+    // Limpiamos el texto de carga y pintamos las tarjetas enfocadas en ecología/entorno
+    contenedorHabitat.innerHTML = '';
+
+    listaFungi.slice(0, lmostrarHabitatEcologia).forEach(hongo => {
+        const tarjeta = document.createElement('article');
+        tarjeta.className = 'tarjetaHongo';
+        tarjeta.innerHTML = `
+            ${hongo.url ? `<img src="${hongo.url}" alt="Micota de ${hongo.name}">` : ''}
+            <div class="contenido">
+                <h3>Hábitat de: ${hongo.name}</h3>
+                <p><strong>Fecha de registro:</strong> ${hongo.observed_on}</p>
+                <p><strong>Zona horaria / Entorno temporal:</strong> ${hongo.observed_time_zone}</p>
+                <p><strong>Categoría Taxonómica:</strong> ${hongo.rank}</p>
+                <hr>
+                <p><strong>Notas de campo / Descripción ecológica:</strong></p>
+                <p class="descripcionEcologica"><em>${hongo.description}</em></p>
+            </div>`;
+            
+        contenedorHabitat.appendChild(tarjeta); 
+    });
+
+    // Botón "Ver más" específico para esta sección
+    if (lmostrarHabitatEcologia < listaFungi.length) {
+        const btnVerMas = document.createElement('button');
+        btnVerMas.textContent = 'Ver más';
+        btnVerMas.className = 'botonVerMas';
+
+        btnVerMas.addEventListener('click', () => {
+            lmostrarHabitatEcologia += 9;
+            mostrarHabitatEcologia(); 
+        });
+
+        contenedorHabitat.appendChild(btnVerMas);
+    }
+}     
+
+// crear una nota de campo
+function crearNotaCampo(event){
+    if (event) event.preventDefault();
+    //el preventdefault lo que hace es que no deja que los inputs refresquen la pagina
+
+    const nombreInput = document.getElementById('postNombre').value.trim();
+    const fechaInput = document.getElementById('postFecha').value;
+    const informacionInput = document.getElementById('postInformacion').value.trim();
+
+
+    if (!nombreInput || !informacionInput) {
+        //si no tiene texto
+        alert("Por favor, completa al menos el nombre y la descripción de la nota.");
+        return;
+    }
+
+    const nuevaNota = {
+        name: nombreInput,
+        preferred_common_name: "Nota personal de campo",
+        observed_on: fechaInput || new Date().toISOString().split('T')[0], // Si no ponen fecha usa la de hoy
+        description: informacionInput,
+        rank: "Especie registrada por usuario",
+        endemic: false,
+        threatened: false,
+        extinct: false,
+        url: "" 
+    };
+
+    listaFungi.unshift(nuevaNota);
+    //este hace que la nota se valla hacia arriba
+    localStorage.setItem('misNotasFungi', JSON.stringify(listaFungi));
+    //se guarda la nuecva informacion en el disco duro
+
+    document.getElementById('postNombre').value = '';
+    document.getElementById('postFecha').value = '';
+    document.getElementById('postInformacion').value = '';
+
+    alert("¡Nota de campo guardada con éxito!");
+
+    //ver si se guardo
+    //console.log(JSON.parse(localStorage.getItem('misNotasFungi')));
+    //se usa en la consola web para ver si lo guarda, pero pide un perdmiso antes de ejecutarlo por ser 
+    //codigo en la consola di que pa evitar que te roben informacion o que se yo
+
+}
+
+//actualizar nota de campo
+
+
 
 // escuchadores de eventos para los botyones
 document.getElementById('btnConsultarHongos').addEventListener('click', consultarHongos);
 document.getElementById('btnFiltrar').addEventListener('click', filtrarHongos);
 document.getElementById('btnVerCaracteristicas').addEventListener('click', mostrarCaracteristicas);
+document.getElementById('btnVerHabitat').addEventListener('click', mostrarHabitatEcologia);
+document.getElementById('btnCrear').addEventListener('click', crearNotaCampo);
