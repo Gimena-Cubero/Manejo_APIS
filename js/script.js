@@ -3,6 +3,7 @@
 const API_FUNGI = 'https://api.inaturalist.org/v1/';
 let listaFungi =[];
 let informacionJson = null;
+let limiteActual = 9; //muestra los resultados de 9 en 9
 
 //https://api.inaturalist.org/v1/observations?taxon_id=47170
 class Micota{
@@ -55,15 +56,51 @@ async function consultarHongos() {
         }
         const datos = await respuesta.json();
         listaFungi = datos.results.map(convertirAMicota);
-        console.log("Hongos cargados:", listaFungi);
+        //se llama a la funcion para que muestre los hongos en la pantalla
+        mostrarHongos();
     }
-    
     catch (error){
         console.log(error); 
     }
     
 }
 
+//mostrar los hongos en el menu
+function mostrarHongos(){
+    const resultadoConsultar = document.getElementById('resultadoConsultar');
+    resultadoConsultar.innerHTML = '';
+
+    listaFungi.slice(0,limiteActual).forEach(hongo => {
+        const tarjeta = document.createElement('article');
+        tarjeta.className = 'tarjetaHongo';
+        tarjeta.innerHTML = 
+        `${hongo.url ? ` <img src= "${hongo.url}" alt= "Micota de ${hongo.name}">`:''}
+        <div class = "contenido">
+            <h3>${hongo.name}</h3>
+            <p><strong>Codigo: </strong>${hongo.id}</p>
+            <p><strong>Clase: </strong>${hongo.rank}</p>
+            <p><strong>Visto en: </strong>${hongo.observed_time_zone}</p>
+            <p><strong>Fecha: </strong>${hongo.observed_on}</p>
+            <p><strong>Extinto: </strong>${hongo.extinct}</p>
+            <p><strong>Descripcion: </strong>${hongo.description}</p>
+        </div>`;
+        resultadoConsultar.appendChild(tarjeta);
+    });
+
+    //creacion del boton para que aparescan mas hongos
+    if (limiteActual < listaFungi.length) {
+        const btnVerMas = document.createElement('button');
+        btnVerMas.id = 'btnVerMas';
+        btnVerMas. textContent = 'Ver más';
+        btnVerMas.className = 'botonVerMas';
+        btnVerMas.addEventListener('click', () =>{
+            limiteActual+= 9;
+            mostrarHongos();
+        })
+
+        resultadoConsultar.appendChild(btnVerMas);
+    }
+}
 
 
 
