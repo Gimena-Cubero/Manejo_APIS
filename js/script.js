@@ -7,15 +7,20 @@ let limiteActual = 9; //muestra los resultados de 9 en 9
 
 //https://api.inaturalist.org/v1/observations?taxon_id=47170
 class Micota{
-    constructor(id, name, rank, observed_on, extinct, observed_time_zone, description, url){
+    constructor(id, name, rank, observed_on, extinct, observed_time_zone, description, url, preferred_common_name, wikipedia_url, endemic, threatened){
         this.id = id;
         this.name = name || 'No disponible';
         this.rank = rank || 'No disponible'; 
         this.observed_on = observed_on || 'No disponible';
-        this.extinct = extinct || 'No disponible'; //extinta o no
+        this.extinct = extinct ?? false; //extinta o no
         this.observed_time_zone = observed_time_zone || 'No disponible';
         this.description = description || 'No disponible';
-        this.url = url || 'No disponible'; // esta es la imagen de la planta
+        this.url = url || ''; // esta es la imagen de la planta
+
+        this.preferred_common_name = preferred_common_name || 'No disponible';
+        this.wikipedia_url = wikipedia_url || ''; // lleva a la wiki
+        this.endemic = endemic ?? false; //vive en un lugar muy especifico?
+        this.threatened = threatened ?? false; //en peligro de extincion
     }
 }
 
@@ -38,8 +43,12 @@ function convertirAMicota(dato){
         dato.taxon?.extinct,
         dato.observed_time_zone,
         dato.description,
-        dato.photos?.[0]?.url // el simbolo raro es para wque no ayan problemas conm la api
+        dato.photos?.[0]?.url, // el simbolo raro es para wque no ayan problemas conm la api
         // si esta  la imagen no la carga ? el sino ayudara a que no aya un error 
+        dato.taxon?.preferred_common_name,
+        dato.taxon?.wikipedia_url,
+        dato.taxon?.endemic,
+        dato.taxon?.threatened
     );
 
     return nuevoHongo;
@@ -49,12 +58,15 @@ function convertirAMicota(dato){
 async function consultarHongos() {
     try{
         const respuesta = await fetch(
-            `${API_FUNGI}observations?taxon_id=47170`
+            `${API_FUNGI}observations?taxon_id=47170&per_page=100`
         );
         if (!respuesta.ok){
             throw new Error(`Error HTTP: ${respuesta.status}`)
         }
         const datos = await respuesta.json();
+
+        // console.log("Estructura del primer hongo:", datos.results[0])
+
         listaFungi = datos.results.map(convertirAMicota);
         //se llama a la funcion para que muestre los hongos en la pantalla
         mostrarHongos();
@@ -66,23 +78,32 @@ async function consultarHongos() {
 }
 
 //mostrar los hongos en el menu
-function mostrarHongos(){
+function mostrarHongos(listaAMostrar = listaFungi){
     const resultadoConsultar = document.getElementById('resultadoConsultar');
     resultadoConsultar.innerHTML = '';
 
-    listaFungi.slice(0,limiteActual).forEach(hongo => {
+    //mensaje para filtar la lista de hongos
+    if (listaAMostrar.length === 0){
+        resultadoConsultar.innerHTML = '<p class="sinResultados">No se encontraron hongos que coincidan con la búsqueda</p>';
+        return;
+    }
+
+    listaAMostrar.slice(0,limiteActual).forEach(hongo => {
         const tarjeta = document.createElement('article');
         tarjeta.className = 'tarjetaHongo';
         tarjeta.innerHTML = 
         `${hongo.url ? ` <img src= "${hongo.url}" alt= "Micota de ${hongo.name}">`:''}
         <div class = "contenido">
             <h3>${hongo.name}</h3>
-            <p><strong>Codigo: </strong>${hongo.id}</p>
-            <p><strong>Clase: </strong>${hongo.rank}</p>
-            <p><strong>Visto en: </strong>${hongo.observed_time_zone}</p>
-            <p><strong>Fecha: </strong>${hongo.observed_on}</p>
-            <p><strong>Extinto: </strong>${hongo.extinct}</p>
-            <p><strong>Descripcion: </strong>${hongo.description}</p>
+            <p><strong>Nombre Común:</strong> ${hongo.preferred_common_name}</p>
+            <p><strong>Código:</strong> ${hongo.id}</p>
+            <p><strong>Clase:</strong> ${hongo.rank}</p>
+            <p><strong>Visto en:</strong> ${hongo.observed_time_zone}</p>
+            <p><strong>Fecha:</strong> ${hongo.observed_on}</p>
+            
+            <p><strong>Descripción:</strong> ${hongo.description}</p>
+                
+                
         </div>`;
         resultadoConsultar.appendChild(tarjeta);
     });
@@ -90,19 +111,107 @@ function mostrarHongos(){
     //creacion del boton para que aparescan mas hongos
     if (limiteActual < listaFungi.length) {
         const btnVerMas = document.createElement('button');
-        btnVerMas.id = 'btnVerMas';
-        btnVerMas. textContent = 'Ver más';
+        btnVerMas.className = 'btnVerMas';
+        btnVerMas.textContent = 'Ver más';
         btnVerMas.className = 'botonVerMas';
+
         btnVerMas.addEventListener('click', () =>{
             limiteActual+= 9;
-            mostrarHongos();
+            mostrarHongos(listaAMostrar);
         })
 
         resultadoConsultar.appendChild(btnVerMas);
     }
 }
 
+//filtrar los hongos segun el buscasdor 
+function filtrarHongos(){
+    //sacar el texto del input para poderlo usar en las busquedas
+    const textoBusqueda = document.getElementById('inputFiltroNombre').value.toLowerCase().trim();
+
+    if (textoBusqueda ==='') {
+        alert('Por favor, ingrese algo para buscar');
+        return; 
+    }
+
+    const listaFiltrada = listaFungi.filter(hongo => {
+        //se convierte a texto patra que no de errores 
+        const nombre = String(hongo.name).toLowerCase();
+        const clase = String(hongo.rank).toLowerCase();
+        const id = String(hongo.id).toLowerCase();
+        const extinto = String(hongo.extinct).toLowerCase();
+
+        //includes dice si esta o no
+        return  nombre.includes(textoBusqueda) || 
+                clase.includes(textoBusqueda) ||
+                id.includes(textoBusqueda) ||
+                extinto.includes(textoBusqueda);
+    });
+
+    mostrarHongos(listaFiltrada);
+}
+
+
+//caracteristicas del os hongos
+// se contara con nombre cientifico su link a la wiki si este esta extinto,
+//o en peligro de exticion o si vive unicamente en un lugar muy especifico
+async function mostrarCaracteristicas(){
+    const contenedorCaracteristicas = document.getElementById('detalleCaracteristicas');
+    contenedorCaracteristicas.innerHTML = '<p>Cargando características...</p>'; // Mensaje de carga amigable
+
+    // Si la lista está vacía, consultamos la API automáticamente de forma independiente
+    if (listaFungi.length === 0) {
+        try {
+            const respuesta = await fetch(`${API_FUNGI}observations?taxon_id=47170&per_page=150`);
+            if (!respuesta.ok) throw new Error("Error al conectar con la API");
+            
+            const datos = await respuesta.json();
+            listaFungi = datos.results.map(convertirAMicota);
+        } catch (error) {
+            contenedorCaracteristicas.innerHTML = `<p class="sinResultados">No se pudieron cargar las características automáticamente.</p>`;
+            console.error(error);
+            return;
+        }
+    }
+
+    contenedorCaracteristicas.innerHTML = '';
+
+    listaFungi.slice(0, limiteActual).forEach(hongo => {
+        const tarjeta = document.createElement('article');
+        tarjeta.className = 'tarjetaHongo';
+        tarjeta.innerHTML = `
+            ${hongo.url ? `<img src="${hongo.url}" alt="Micota de ${hongo.name}">` : ''}
+            <div class="contenido">
+                <h3>Detalles de: ${hongo.name}</h3>
+                <p><strong>Nombre Común:</strong> ${hongo.preferred_common_name}</p>
+                <p><strong>Rango Taxonómico:</strong> ${hongo.rank}</p>
+                <p><strong>Es endémico:</strong> ${hongo.endemic ? 'Sí (Especie exclusiva)' : 'No'}</p>
+                <p><strong>En peligro de extinción:</strong> ${hongo.threatened ? 'Sí (En riesgo)' : 'No'}</p>
+                <p><strong>Está extinto:</strong> ${hongo.extinct ? 'Sí' : 'No'}</p>
+                
+                ${hongo.wikipedia_url ? `<a href="${hongo.wikipedia_url}" target="_blank" class="btnWikipedia">Leer más en Wikipedia</a>` : '<p><em>No hay enlace de Wikipedia disponible.</em></p>'}
+            </div>`;
+            
+        contenedorCaracteristicas.appendChild(tarjeta); 
+    });
+
+    // El botón "Ver más"
+    if (limiteActual < listaFungi.length) {
+        const btnVerMas = document.createElement('button');
+        btnVerMas.textContent = 'Ver más';
+        btnVerMas.className = 'botonVerMas';
+
+        btnVerMas.addEventListener('click', () => {
+            limiteActual += 9;
+            mostrarCaracteristicas(); 
+        });
+
+        contenedorCaracteristicas.appendChild(btnVerMas);
+    }
+}
 
 
 // escuchadores de eventos para los botyones
 document.getElementById('btnConsultarHongos').addEventListener('click', consultarHongos);
+document.getElementById('btnFiltrar').addEventListener('click', filtrarHongos);
+document.getElementById('btnVerCaracteristicas').addEventListener('click', mostrarCaracteristicas);
