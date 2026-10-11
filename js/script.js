@@ -345,6 +345,32 @@ function actualizarNotaCampo(event) {
 }
 
 //eliminar nota de campo
+function eliminarNotaCampo(event) {
+    if (event) event.preventDefault();
+    const idInput = parseInt(document.getElementById('deleteId').value);
+    const contenedorResultado = document.getElementById('resultadoEliminar'); 
+    
+    if (isNaN(idInput)) { // no es un numero
+        if (contenedorResultado) contenedorResultado.innerHTML = `<p style="color: red;">Por favor, ingresa un ID válido.</p>`;
+        return;
+    }
+    const indiceReal = idInput - 1;
+    if (indiceReal >= 0 && indiceReal < listaFungi.length) {
+        const elementoEliminado = listaFungi.splice(indiceReal, 1);
+        //el slice parte un pedaso para agregar remplazar o eliminar elementos
+
+        localStorage.setItem('misNotasFungi', JSON.stringify(listaFungi));
+        if (contenedorResultado) {
+            contenedorResultado.innerHTML = `<p style="color: green;">¡Registro #${idInput} (${elementoEliminado[0].name}) eliminado con éxito!</p>`;
+        }
+        document.getElementById('deleteId').value = '';
+    } else {
+        if (contenedorResultado) {
+            contenedorResultado.innerHTML = `<p style="color: red;">Error: No existe ningún registro con el ID ${idInput}.</p>`;
+        }
+    }
+}
+
 
 // escuchadores de eventos para los botyones
 document.getElementById('btnConsultarHongos').addEventListener('click', consultarHongos);
@@ -352,4 +378,5 @@ document.getElementById('btnFiltrar').addEventListener('click', filtrarHongos);
 document.getElementById('btnVerCaracteristicas').addEventListener('click', mostrarCaracteristicas);
 document.getElementById('btnVerHabitat').addEventListener('click', mostrarHabitatEcologia);
 document.getElementById('btnCrear').addEventListener('click', crearNotaCampo);
-document.getElementById('btnActualizar').addEventListener('click', actualizarNotaCampo)
+document.getElementById('btnActualizar').addEventListener('click', actualizarNotaCampo);
+document.getElementById('btnEliminar').addEventListener('click', eliminarNotaCampo);
