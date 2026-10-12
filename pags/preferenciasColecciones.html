@@ -15,6 +15,7 @@
             <nav>
                 <a href="../index.html#exploradorBiodiversidad">Biodiversidad</a>
                 <a href="../index.html#CRUDCreaciones">Creaciones</a>
+                <a href="requisitos.html">Requisitos</a>
                 <a href="preferenciasColecciones.html">Preferencias y Colecciones</a>
             </nav>
             
@@ -23,9 +24,9 @@
     <main>
         <section>
             <div class="gridConsultas">
-                <div>
+                <!-- <div> -->
                     <!-- guardar avistamientos -->
-                    <article class="cardConsulta">
+                    <article class="cardConsulta" id="seccionFavorito">
                         <h2>Guardar Avistamientos Favoritos</h2>
                         <p>Gestiona y consulta las especies o avistamientos de iNaturalist que has guardado.</p>
                         <div>
@@ -35,23 +36,23 @@
                         </div>
                         <div id="resultadoFavoritos"></div>
                     </article>
-                </div>
+                <!-- </div> -->
 
-                <div>
+                <!-- <div> -->
                     <!-- almacenar preferencias -->
-                    <article class="cardConsulta">
+                    <!-- <article class="cardConsulta">
                         <h2>Almacenar Preferencias del Usuario</h2>
                         <p>Personaliza cómo quieres visualizar la plataforma de micología.</p>
                         <div>
                             <label for="selectRegion">Región predeterminada:</label>
                             <select id="selectRegion">
-                                <option value="CR">Costa Rica</option>
-                                <option value="GLOBAL">Global</option>
+                                <option value="global">Global</option>
+                                <option value="costa-rica">Costa Rica</option>
                             </select>
                         </div>
                         <button id="btnGuardarPreferencias">Guardar Preferencias</button>
                         <div id="resultadoPreferencias"></div>
-                    </article>
+                    </article> -->
                 </div>
             </div>
         </section>

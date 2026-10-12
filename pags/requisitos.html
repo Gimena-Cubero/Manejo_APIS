@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Requisitos</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" href="../img/icono.png">
+</head>
+<body>
+    <header>
+        <div id="encabezado">
+            <h1>Preferencias y Colecciones</h1>
+            <nav>
+                <a href="../index.html#exploradorBiodiversidad">Biodiversidad</a>
+                <a href="../index.html#CRUDCreaciones">Creaciones</a>
+                <a href="requisitos.html">Requisitos</a>
+                <a href="preferenciasColecciones.html">Preferencias y Colecciones</a>
+            </nav>
+        </div>
+    </header>
+    <main>
+       <section>
+            <div class="gridConsultas">
+                
+                <!-- Seccion: Promesas con .then y .catch -->
+                <article class="cardConsulta">
+                    <h2>Promesas con .then() y .catch()</h2>
+                    <p>Consulta una observación usando la sintaxis clásica de promesas.</p>
+                    <button id="btnConsultarPromesa">Consultar con .then()</button>
+                    <div id="resultadoPromesa"></div>
+                </article>
+
+                <!-- Seccion: Archivo JSON Local -->
+                <article class="cardConsulta">
+                    <h2>Consumo de Archivo JSON Local</h2>
+                    <p>Filtra y explora los datos almacenados localmente.</p>
+                    <label for="inputFiltroJsonLocal">Filtro:</label>
+                    <input type="text" id="inputFiltroJsonLocal" placeholder="Filtrar hongos locales...">
+                    <button id="btnCargarJsonLocal">Cargar y Filtrar JSON Local</button>
+                    <div id="resultadoJsonLocal"></div>
+                </article>
+
+                <!-- Seccion: Administracion de Cookies -->
+                <article class="cardConsulta">
+                    <h2>Administración de Cookies</h2>
+                    <p>Gestiona las preferencias guardadas en tu navegador.</p>
+                    <label for="inputCookie">Valor de la cookie:</label>
+                    <input type="text" id="inputCookie" placeholder="Escribe tu región o preferencia">
+                    <button id="btnGuardarCookie">Guardar Cookie</button>
+                    <button id="btnLeerCookie">Leer Cookie</button>
+                    <div id="resultadoCookie"></div>
+                </article>
+
+                <!-- Seccion: Manejo de Errores Amigables -->
+                <article class="cardConsulta">
+                    <h2>Manejo de Errores Comprensibles</h2>
+                    <p>Simula diversos errores para el usuario final:</p>
+                    <button id="btnSimularApi">Simular API no disponible</button>
+                    <button id="btnSimularBusqueda">Simular Búsqueda sin resultados</button>
+                    <button id="btnSimularFormulario">Simular Formulario incompleto</button>
+                    <div id="contenedorErrores"></div>
+                </article>
+
+            </div>
+        </section>
+
+        <section>
+            <img src="../img/Honguitos.png" alt="Honguito decorativo" class="honguitoIzq">
+            <img src="../img/Honguitos.png" alt="Honguito decorativo" class="honguitoDer">
+        </section>
+    </main>
+    <footer>
+        <div>
+            <!-- Información del proyecto -->
+            <article>
+                <h3>FungiExplorer &bull; iNaturalist API</h3>
+                <p>Plataforma de exploración micológica y gestión de avistamientos.</p>
+                <p>&copy; 2026 &bull; Proyecto académico de desarrollo de software</p>
+            </article>
+        </div>
+    </footer>
+    <script src="../js/script.js"></script>
+</body>
+</html>

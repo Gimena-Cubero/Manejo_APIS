@@ -414,3 +414,51 @@ body {
   line-height: 1.4;
   opacity: 0.9;
 }
+
+/* Estilo y centrado específico para el botón de búsqueda de favoritos */
+.gridConsultas #seccionFavorito {
+  grid-column: 1 / -1; /* Ocupa todo el ancho de la rejilla */
+  max-width: 600px;    /* Controla que no se estire demasiado */
+  width: 100%;
+  margin: 0 auto;      /* Lo centra perfectamente en la pantalla */
+}
+
+.tarjetaHongo button, 
+.tarjetaHongo .btnFavoritos {
+  display: block;
+  width: 100%;
+  background-color: #6f533e; /* Tu tono marrón característico */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.6rem;
+  text-align: center;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.tarjetaHongo button:hover, 
+.tarjetaHongo .btnFavoritos:hover {
+  background-color: #5c4433; /* Un tono un pelín más oscuro al pasar el cursor */
+}
+
+.tarjetaHongo button:active, 
+.tarjetaHongo .btnFavoritos:active {
+  transform: scale(0.98);
+}
+
+.cardConsulta button + button {
+  margin-top: 0.8rem; /* Separa los botones si hay más de uno seguidos */
+}
+
+/* Contenedores de resultados internos en las tarjetas de requisitos */
+.cardConsulta div[id^="resultado"], 
+.cardConsulta div[id="contenedorErrores"] {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}

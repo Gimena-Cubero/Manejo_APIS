@@ -76,7 +76,6 @@ async function consultarHongos() {
     catch (error){
         console.log(error); 
     }
-    
 }
 
 //mostrar los hongos en el menu
@@ -90,27 +89,34 @@ function mostrarHongos(listaAMostrar = listaFungi){
         return;
     }
 
-    listaAMostrar.slice(0,lMostrarHongos).forEach(hongo => {
-        const tarjeta = document.createElement('article');
-        tarjeta.className = 'tarjetaHongo';
-        tarjeta.innerHTML = 
-        `${hongo.url ? ` <img src= "${hongo.url}" alt= "Micota de ${hongo.name}">`:''}
-        <div class = "contenido">
+    listaAMostrar.slice(0, lMostrarHongos).forEach(hongo => {
+    const tarjeta = document.createElement('article');
+    tarjeta.className = 'tarjetaHongo';
+    tarjeta.innerHTML = `
+        ${hongo.url ? `<img src="${hongo.url}" alt="Micota de ${hongo.name}">` : ''}
+        <div class="contenido">
             <h3>${hongo.name}</h3>
             <p><strong>Nombre Común:</strong> ${hongo.preferred_common_name}</p>
             <p><strong>Código:</strong> ${hongo.id}</p>
             <p><strong>Clase:</strong> ${hongo.rank}</p>
             <p><strong>Visto en:</strong> ${hongo.observed_time_zone}</p>
             <p><strong>Fecha:</strong> ${hongo.observed_on}</p>
-            
             <p><strong>Descripción:</strong> ${hongo.description}</p>
-                
-                
-        </div>`;
-        resultadoConsultar.appendChild(tarjeta);
-    });
+        </div>
+    `;
 
-    //creacion del boton para que aparescan mas hongos
+    const btnFavorito = document.createElement('button');
+    btnFavorito.textContent = 'Guardar en Favoritos';
+    btnFavorito.className = 'btnFavorito';
+    btnFavorito.addEventListener('click', () => {
+        agregarAFavoritos(hongo);
+    });
+    const divContenido = tarjeta.querySelector('.contenido');
+    divContenido.appendChild(btnFavorito);
+
+    resultadoConsultar.appendChild(tarjeta);
+});
+
     if (lMostrarHongos < listaFungi.length) {
         const btnVerMas = document.createElement('button');
         btnVerMas.className = 'btnVerMas';
@@ -371,12 +377,235 @@ function eliminarNotaCampo(event) {
     }
 }
 
+let listaFavoritos = [];
+const favoritosGuardados = localStorage.getItem('favoritosFungi');
+if (favoritosGuardados) {
+    listaFavoritos = JSON.parse(favoritosGuardados);
+}
+function buscarYMostrarFavoritos(event) {
+    if (event && typeof event.preventDefault === 'function') {
+        event.preventDefault();
+    }
+
+    const terminoBusqueda = document.getElementById('buscarFavoritos').value.trim().toLowerCase();
+    const contenedorResultado = document.getElementById('resultadoFavoritos');
+    contenedorResultado.innerHTML = '';
+
+    if (listaFavoritos.length === 0) {
+        contenedorResultado.innerHTML = `<p class="sinResultados">Aún no tienes avistamientos guardados en favoritos.</p>`;
+        return;
+    }
+    const resultadosFiltrados = listaFavoritos.filter(hongo => {
+        if (terminoBusqueda === '') return true; 
+        const nombreComun = hongo.preferred_common_name ? hongo.preferred_common_name.toLowerCase() : '';
+        const nombreCientifico = hongo.name ? hongo.name.toLowerCase() : ''
+        return nombreComun.includes(terminoBusqueda) || nombreCientifico.includes(terminoBusqueda);
+    });
+
+    if (resultadosFiltrados.length === 0) {
+        contenedorResultado.innerHTML = `<p class="sinResultados">No se encontró ningún favorito con el nombre "${terminoBusqueda}".</p>`;
+        return;
+    }
+
+    resultadosFiltrados.forEach(hongo => {
+        const tarjeta = document.createElement('article');
+        tarjeta.className = 'tarjetaHongo';
+        tarjeta.innerHTML = `
+            ${hongo.url ? `<img src="${hongo.url}" alt="Micota de ${hongo.name}">` : ''}
+            <div class="contenido">
+                <h3>${hongo.name}</h3>
+                <p><strong>Nombre Común:</strong> ${hongo.preferred_common_name || 'No registrado'}</p>
+                <p><strong>Fecha de observación:</strong> ${hongo.observed_on || 'Desconocida'}</p>
+                <p><em>${hongo.description || 'Sin notas adicionales.'}</em></p>
+            </div>
+        `;
+        contenedorResultado.appendChild(tarjeta);
+    });
+}
+
+function agregarAFavoritos(hongoAProcesar) {
+    const yaExiste = listaFavoritos.some(hongo => hongo.name === hongoAProcesar.name);
+    if (!yaExiste) {
+        listaFavoritos.push(hongoAProcesar);
+        localStorage.setItem('favoritosFungi', JSON.stringify(listaFavoritos));
+        alert("¡Agregado a favoritos con éxito!");
+    } else {
+        alert("Este hongo ya está en tus favoritos.");
+    }
+}
+
+//preferencia del usuario 
+function guardarPreferenciaUsuario(event) {
+    if (event && typeof event.preventDefault === 'function') {
+        event.preventDefault();
+    }
+    const regionSeleccionada = document.getElementById('selectRegion').value;
+    const contenedorResultado = document.getElementById('resultadoPreferencia');
+    localStorage.setItem('preferenciaRegionFungi', regionSeleccionada);
+
+    if (contenedorResultado) {
+        contenedorResultado.innerHTML = `<p style="color: green;">¡Preferencia guardada! Región activa: <strong>${regionSeleccionada.toUpperCase()}</strong></p>`;
+    }
+}
+
+//--------------------------------------------------------------------------------------------------------------------------------------------
+//cosas que le faltan al proyecto por eso me invente otra seccion
+
+//una promesa con ten y catch
+function consultarConPromesa() {
+    const contenedorResultado = document.getElementById('resultadoPromesa');
+    if (!contenedorResultado) return;
+    contenedorResultado.innerHTML = '<p>Cargando con .then()...</p>';
+
+    fetch('https://api.inaturalist.org/v1/observations?taxon_id=47170&per_page=1')
+        .then(respuesta => {
+            if (!respuesta.ok) {
+                throw new Error(`Error HTTP en la promesa: ${respuesta.status}`);
+            }
+            return respuesta.json();
+        })
+        .then(datos => {
+            const hongo = datos.results[0];
+            contenedorResultado.innerHTML = `<p class="exito">¡Éxito con .then()! Hongo encontrado: ${hongo.taxon ? hongo.taxon.name : 'Sin nombre'}</p>`;
+        })
+        .catch(error => {
+            contenedorResultado.innerHTML = `<p class="errorAmigable">Ocurrió un error en la promesa: ${error.message}</p>`;
+        });
+}
+
+
+// consumir el json local
+async function cargarJsonLocal() {
+    const contenedorResultado = document.getElementById('resultadoJsonLocal');
+    const inputFiltro = document.getElementById('inputFiltroJsonLocal');
+    if (!contenedorResultado || !inputFiltro) return;
+    const textoFiltro = inputFiltro.value.trim().toLowerCase();
+    try {
+        const respuesta = await fetch('../json/data.json');
+        if (!respuesta.ok) throw new Error("No se pudo cargar el archivo data.json.");
+        const datosJson = await respuesta.json();
+        const listaHongosLocales = datosJson.hongos || [];
+        const listaFiltrada = listaHongosLocales.filter(item => 
+            item.codigo.toLowerCase().includes(textoFiltro) || 
+            item.continente.toLowerCase().includes(textoFiltro) || 
+            item.interes.toLowerCase().includes(textoFiltro) || 
+            item.descripcion.toLowerCase().includes(textoFiltro)
+        );
+        contenedorResultado.innerHTML = `<p class="exito">Mostrando ${listaFiltrada.length} elementos de data.json:</p>`;
+        if (listaFiltrada.length === 0) {
+            contenedorResultado.innerHTML += `<p class="errorAmigable">No se encontraron coincidencias en el archivo local.</p>`;
+            return;
+        }
+        listaFiltrada.forEach(item => {
+            contenedorResultado.innerHTML += `
+                <div class="tarjetaHongoLocal">
+                    <p><strong>Código:</strong> ${item.codigo}</p>
+                    <p><strong>Continente:</strong> ${item.continente} (${item.interes})</p>
+                    <p><strong>Prioridad:</strong> ${item.prioridad}</p>
+                    <p><strong>Descripción:</strong> ${item.descripcion}</p>
+                    <hr>
+                </div>
+            `;
+        });
+
+    } catch (error) {
+        contenedorResultado.innerHTML = `<p class="errorAmigable">Error al procesar data.json. Asegúrate de que el archivo esté en la misma carpeta.</p>`;
+    }
+}
+
+
+// mas galletas
+function guardarCookieUsuario(event) {
+    if (event && typeof event.preventDefault === 'function') event.preventDefault();
+    //typeof este alluda a saber que tipo de variable es
+    const inputValor = document.getElementById('inputCookie');
+    const contenedorResultado = document.getElementById('resultadoCookie');
+    if (!inputValor || !contenedorResultado) return;
+    const valor = inputValor.value.trim();
+    if (!valor) {
+        contenedorResultado.innerHTML = `<p class="errorAmigable">Por favor, escribe un valor para guardar en la cookie.</p>`;
+        return;
+    }
+    document.cookie = `preferenciaFungi=${encodeURIComponent(valor)}; max-age=86400; path=/`;
+    contenedorResultado.innerHTML = `<p class="exito">¡Cookie guardada correctamente en el navegador!</p>`;
+    inputValor.value = '';
+}
+
+function leerCookieUsuario(event) {
+    if (event && typeof event.preventDefault === 'function') event.preventDefault();
+    const contenedorResultado = document.getElementById('resultadoCookie');
+    if (!contenedorResultado) return;
+    const cookies = document.cookie.split(';');
+    let valorCookie = null;
+    for (let c of cookies) {
+        let [nombre, valor] = c.trim().split('=');
+        if (nombre === 'preferenciaFungi') {
+            valorCookie = decodeURIComponent(valor);
+            break;
+        }
+    }
+
+    if (valorCookie) {
+        contenedorResultado.innerHTML = `<p class="exito">Valor leído desde la cookie: <strong>${valorCookie}</strong></p>`;
+    } else {
+        contenedorResultado.innerHTML = `<p class="errorAmigable">No se encontró ninguna cookie activa con el nombre 'preferenciaFungi'.</p>`;
+    }
+}
+
+
+//errores
+function simularErrorUsuario(tipoError) {
+    const contenedorErrores = document.getElementById('contenedorErrores');
+    if (!contenedorErrores) return;
+
+    let mensaje = '';
+
+    switch (tipoError) {
+        case 'api':
+            mensaje = "Por favor, verifica tu conexión a internet e inténtalo más tarde.";
+            break;
+        case 'busqueda':
+            mensaje = "No se encontraron avistamiento.";
+            break;
+        case 'formulario':
+            mensaje = "Ay campos obligatorios vacíos en el formulario. ";
+            break;
+        default:
+            mensaje = "Por favor, reintenta la operación.";
+    }
+
+    contenedorErrores.innerHTML = `<div class="errorAmigable">${mensaje}</div>`;
+}
+
+
+
+//--------------------------------------------------------------------------------------------------------------------------------------------
 
 // escuchadores de eventos para los botyones
-document.getElementById('btnConsultarHongos').addEventListener('click', consultarHongos);
-document.getElementById('btnFiltrar').addEventListener('click', filtrarHongos);
-document.getElementById('btnVerCaracteristicas').addEventListener('click', mostrarCaracteristicas);
-document.getElementById('btnVerHabitat').addEventListener('click', mostrarHabitatEcologia);
-document.getElementById('btnCrear').addEventListener('click', crearNotaCampo);
-document.getElementById('btnActualizar').addEventListener('click', actualizarNotaCampo);
-document.getElementById('btnEliminar').addEventListener('click', eliminarNotaCampo);
+//si no lo encuentra lo inventa
+function agregarEventoSeguro(idElemento, evento, funcion) {
+    const elemento = document.getElementById(idElemento);
+    if (elemento) {
+        elemento.addEventListener(evento, funcion);
+    }
+}
+
+
+agregarEventoSeguro('btnConsultarPromesa', 'click', consultarConPromesa);
+agregarEventoSeguro('btnCargarJsonLocal', 'click', cargarJsonLocal);
+agregarEventoSeguro('btnGuardarCookie', 'click', guardarCookieUsuario);
+agregarEventoSeguro('btnLeerCookie', 'click', leerCookieUsuario);
+agregarEventoSeguro('btnSimularApi', 'click', () => simularErrorUsuario('api'));
+agregarEventoSeguro('btnSimularBusqueda', 'click', () => simularErrorUsuario('busqueda'));
+agregarEventoSeguro('btnSimularFormulario', 'click', () => simularErrorUsuario('formulario'));
+
+
+agregarEventoSeguro('btnConsultarHongos', 'click', consultarHongos);
+agregarEventoSeguro('btnFiltrar', 'click', filtrarHongos);
+agregarEventoSeguro('btnVerCaracteristicas', 'click', mostrarCaracteristicas);
+agregarEventoSeguro('btnVerHabitat', 'click', mostrarHabitatEcologia);
+agregarEventoSeguro('btnCrear', 'click', crearNotaCampo);
+agregarEventoSeguro('btnActualizar', 'click', actualizarNotaCampo);
+agregarEventoSeguro('btnEliminar', 'click', eliminarNotaCampo);
+agregarEventoSeguro('btnBuscarFavoritos', 'click', buscarYMostrarFavoritos);
+
